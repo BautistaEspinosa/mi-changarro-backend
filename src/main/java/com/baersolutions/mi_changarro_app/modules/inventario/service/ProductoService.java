@@ -1,22 +1,42 @@
 package com.baersolutions.mi_changarro_app.modules.inventario.service;
 
-import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoCreateRequestDTO;
-import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoUpdateRequestDTO;
+import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoRequestDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.dto.response.ProductoResponseDTO;
 
 import java.util.List;
 
+/**
+ * Define las operaciones del módulo de productos.
+ */
 public interface ProductoService {
 
-  ProductoResponseDTO crearProducto(ProductoCreateRequestDTO dto);
+  /**
+   * Crea un nuevo producto en el sistema.
+   */
+  ProductoResponseDTO crearProducto(ProductoRequestDTO dto);
 
+  /**
+   * Obtiene un producto por su ID.
+   */
   ProductoResponseDTO obtenerPorId(Long id);
 
-  List<ProductoResponseDTO> listarActivos();
+  /**
+   * Obtiene todos los productos activos.
+   */
+  List<ProductoResponseDTO> obtenerActivos();
 
-  ProductoResponseDTO actualizarProducto(Long id, ProductoUpdateRequestDTO dto);
+  /**
+   * Busca productos por nombre.
+   */
+  List<ProductoResponseDTO> buscarPorNombre(String nombre);
 
-  void desactivarProducto(Long id);
+  /**
+   * Desactiva un producto (soft delete).
+   */
+  ProductoResponseDTO desactivarProducto(Long id);
 
-  void activarProducto(Long id);
+  /**
+   * Activa un producto.
+   */
+  ProductoResponseDTO activarProducto(Long id);
 }

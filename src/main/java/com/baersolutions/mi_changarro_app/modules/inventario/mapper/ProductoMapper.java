@@ -1,35 +1,47 @@
 package com.baersolutions.mi_changarro_app.modules.inventario.mapper;
 
-import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoCreateRequestDTO;
+import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoRequestDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.dto.response.ProductoResponseDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.entity.Producto;
 
-import java.math.BigDecimal;
+/**
+ * Mapper manual del módulo Producto.
+ */
+public final class ProductoMapper {
 
-public class ProductoMapper {
+  private ProductoMapper() {
+    throw new IllegalStateException("Utility class");
+  }
 
-  public static Producto toEntity(ProductoCreateRequestDTO dto) {
+  /**
+   * Convierte RequestDTO a entidad.
+   */
+  public static Producto toEntity(ProductoRequestDTO dto) {
+
     return Producto.builder()
         .nombre(dto.nombre())
+        .costoUnitarioActual(dto.costoUnitarioActual())
+        .precioVenta(dto.precioVenta())
+        .stockActual(dto.stockActual())
         .stockMinimo(dto.stockMinimo())
-        .precioVentaActual(dto.precioVentaActual())
-        .stockActual(0)
-        .costoUnitarioActual(BigDecimal.ZERO)
         .activo(true)
         .build();
   }
 
-  public static ProductoResponseDTO toDTO(Producto producto) {
+  /**
+   * Convierte entidad a ResponseDTO.
+   */
+  public static ProductoResponseDTO toDTO(Producto entity) {
+
     return new ProductoResponseDTO(
-        producto.getId(),
-        producto.getNombre(),
-        producto.getStockActual(),
-        producto.getStockMinimo(),
-        producto.getPrecioVentaActual(),
-        producto.getCostoUnitarioActual(),
-        producto.getActivo(),
-        producto.getCreatedAt(),
-        producto.getUpdatedAt()
+        entity.getId(),
+        entity.getNombre(),
+        entity.getCostoUnitarioActual(),
+        entity.getPrecioVenta(),
+        entity.getStockActual(),
+        entity.getStockMinimo(),
+        entity.getActivo()
     );
   }
+
 }

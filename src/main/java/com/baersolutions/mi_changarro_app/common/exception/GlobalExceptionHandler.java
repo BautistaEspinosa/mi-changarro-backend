@@ -1,43 +1,143 @@
 package com.baersolutions.mi_changarro_app.common.exception;
 
+import com.baersolutions.mi_changarro_app.common.constants.LogMessages;
+import com.baersolutions.mi_changarro_app.common.response.ApiResponse;
+import com.baersolutions.mi_changarro_app.common.util.RequestUtils;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Manejo global de excepciones de la aplicación.
+ */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  private static final String MODULE = "GLOBAL";
+  private static final String OPERATION = "EXCEPTION_HANDLER";
+
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<Map<String,Object>> handlerNotFound(ResourceNotFoundException ex){
-    return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+  public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(
+      ResourceNotFoundException ex
+  ) {
+
+    log.warn(
+        LogMessages.ERROR,
+        MODULE,
+        OPERATION,
+        ex.getMessage()
+    );
+
+    return buildResponse(
+        ex.getMessage(),
+        HttpStatus.NOT_FOUND
+    );
   }
 
   @ExceptionHandler(BusinessException.class)
-  public ResponseEntity<Map<String,Object>> handlerBussines(BusinessException ex){
-    return buildResponse(ex.getMessage(),HttpStatus.BAD_REQUEST);
+  public ResponseEntity<ApiResponse<Void>> handleBusiness(
+      BusinessException ex
+  ) {
+
+    log.warn(
+        LogMessages.ERROR,
+        MODULE,
+        OPERATION,
+        ex.getMessage()
+    );
+
+    return buildResponse(
+        ex.getMessage(),
+        HttpStatus.BAD_REQUEST
+    );
   }
 
   @ExceptionHandler(InvalidOperationException.class)
-  public ResponseEntity<Map<String,Object>> handlerInvalid(InvalidOperationException ex){
-    return buildResponse(ex.getMessage(),HttpStatus.CONFLICT);
+  public ResponseEntity<ApiResponse<Void>> handleInvalidOperation(
+      InvalidOperationException ex
+  ) {
+
+    log.warn(
+        LogMessages.ERROR,
+        MODULE,
+        OPERATION,
+        ex.getMessage()
+    );
+
+    return buildResponse(
+        ex.getMessage(),
+        HttpStatus.CONFLICT
+    );
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ApiResponse<Void>> handleValidation(
+      MethodArgumentNotValidException ex
+  ) {
+
+    String message = ex.getBindingResult()
+        .getFieldErrors()
+        .stream()
+        .map(FieldError::getDefaultMessage)
+        .collect(Collectors.joining(", "));
+
+    log.warn(
+        LogMessages.ERROR,
+        MODULE,
+        OPERATION,
+        message
+    );
+
+    return buildResponse(
+        message,
+        HttpStatus.BAD_REQUEST
+    );
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String,Object>> handlerGeneral(Exception ex){
-    return buildResponse("Error interno del sistema",HttpStatus.INTERNAL_SERVER_ERROR);
+  public ResponseEntity<ApiResponse<Void>> handleGeneral(
+      Exception ex
+  ) {
+
+    log.error(
+        LogMessages.ERROR,
+        MODULE,
+        OPERATION,
+        ex.getMessage(),
+        ex
+    );
+
+    return buildResponse(
+        "Error interno del servidor.",
+        HttpStatus.INTERNAL_SERVER_ERROR
+    );
   }
 
-  public ResponseEntity<Map<String,Object>> buildResponse(String message, HttpStatus status){
-    Map<String,Object> body = new HashMap<>();
+  private ResponseEntity<ApiResponse<Void>> buildResponse(
+      String message,
+      HttpStatus status
+  ) {
 
-    body.put("message: ",message);
-    body.put("status: ",status.value());
-    body.put("timestamp: ", LocalDateTime.now());
+    ApiResponse<Void> response = new ApiResponse<>(
+        message,
+        null,
+        status.value(),
+        LocalDateTime.now(),
+        RequestUtils.getCurrentPath()
+    );
 
-    return new ResponseEntity<>(body,status);
+    return ResponseEntity
+        .status(status)
+        .body(response);
   }
+
+
+
 }

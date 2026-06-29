@@ -6,17 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entidad que representa un producto del inventario.
+ */
 @Entity
 @Table(name = "producto")
 @Getter
@@ -30,8 +30,14 @@ public class Producto extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 100)
+  @Column(nullable = false)
   private String nombre;
+
+  @Column(nullable = false)
+  private BigDecimal costoUnitarioActual;
+
+  @Column(nullable = false)
+  private BigDecimal precioVenta;
 
   @Column(nullable = false)
   private Integer stockActual;
@@ -40,12 +46,6 @@ public class Producto extends BaseEntity {
   private Integer stockMinimo;
 
   @Column(nullable = false)
-  private BigDecimal precioVentaActual;
-
-  @Column(nullable = false)
-  private BigDecimal costoUnitarioActual;
-
-  @Column(nullable = false)
-  private Boolean activo;
+  private Boolean activo = true;
 
 }

@@ -1,90 +1,178 @@
 package com.baersolutions.mi_changarro_app.modules.inventario.service.impl;
 
+import com.baersolutions.mi_changarro_app.common.constants.LogMessages;
 import com.baersolutions.mi_changarro_app.common.exception.BusinessException;
 import com.baersolutions.mi_changarro_app.common.exception.ResourceNotFoundException;
-import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoCreateRequestDTO;
-import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoUpdateRequestDTO;
+import com.baersolutions.mi_changarro_app.modules.inventario.constants.ProductoMessages;
+import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoRequestDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.dto.response.ProductoResponseDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.entity.Producto;
 import com.baersolutions.mi_changarro_app.modules.inventario.mapper.ProductoMapper;
 import com.baersolutions.mi_changarro_app.modules.inventario.repository.ProductoRepository;
 import com.baersolutions.mi_changarro_app.modules.inventario.service.ProductoService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+/**
+ * Implementación del servicio de Producto.
+ */
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class ProductoServiceImpl implements ProductoService {
 
   private final ProductoRepository productoRepository;
 
-  public ProductoServiceImpl(ProductoRepository productoRepository) {
-    this.productoRepository = productoRepository;
-  }
-
   @Override
-  public ProductoResponseDTO crearProducto(ProductoCreateRequestDTO dto) {
+  public ProductoResponseDTO crearProducto(ProductoRequestDTO dto) {
 
-    log.info("Creando producto {}", dto.nombre());
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_CREAR
+    );
 
-    if (productoRepository.existsByNombreIgnoreCase(dto.nombre())) {
-      throw new BusinessException("Ya existe un producto con ese nombre");
+    if (productoRepository.findByNombre(dto.nombre()).isPresent()) {
+      throw new BusinessException(ProductoMessages.PRODUCTO_DUPLICADO);
     }
 
     Producto producto = ProductoMapper.toEntity(dto);
+    Producto saved = productoRepository.save(producto);
 
-    return ProductoMapper.toDTO(productoRepository.save(producto));
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_CREAR
+    );
+
+    return ProductoMapper.toDTO(saved);
   }
 
   @Override
   public ProductoResponseDTO obtenerPorId(Long id) {
 
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_OBTENER
+    );
+
     Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        .orElseThrow(() -> new ResourceNotFoundException(
+            ProductoMessages.PRODUCTO_NO_ENCONTRADO
+        ));
+
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_OBTENER
+    );
 
     return ProductoMapper.toDTO(producto);
   }
 
   @Override
-  public List<ProductoResponseDTO> listarActivos() {
-    return productoRepository.findByActivoTrue()
+  public List<ProductoResponseDTO> obtenerActivos() {
+
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_LISTAR
+    );
+
+    List<ProductoResponseDTO> productos = productoRepository.findByActivoTrue()
         .stream()
         .map(ProductoMapper::toDTO)
         .toList();
+
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_LISTAR
+    );
+
+    return productos;
   }
 
   @Override
-  public ProductoResponseDTO actualizarProducto(Long id, ProductoUpdateRequestDTO dto) {
+  public List<ProductoResponseDTO> buscarPorNombre(String nombre) {
 
-    Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        "BUSCAR"
+    );
 
-    producto.setNombre(dto.nombre());
-    producto.setStockMinimo(dto.stockMinimo());
-    producto.setPrecioVentaActual(dto.precioVentaActual());
+    List<ProductoResponseDTO> productos = productoRepository
+        .findByNombreContainingIgnoreCase(nombre)
+        .stream()
+        .map(ProductoMapper::toDTO)
+        .toList();
 
-    return ProductoMapper.toDTO(productoRepository.save(producto));
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        "BUSCAR"
+    );
+
+    return productos;
   }
 
   @Override
-  public void desactivarProducto(Long id) {
+  public ProductoResponseDTO desactivarProducto(Long id) {
+
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_ELIMINAR
+    );
 
     Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        .orElseThrow(() -> new ResourceNotFoundException(
+            ProductoMessages.PRODUCTO_NO_ENCONTRADO
+        ));
 
     producto.setActivo(false);
-    productoRepository.save(producto);
+
+    Producto saved = productoRepository.save(producto);
+
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        ProductoMessages.OP_ELIMINAR
+    );
+
+    return ProductoMapper.toDTO(saved);
   }
 
   @Override
-  public void activarProducto(Long id) {
+  public ProductoResponseDTO activarProducto(Long id) {
+
+    log.info(
+        LogMessages.START,
+        ProductoMessages.MODULE,
+        "ACTIVAR"
+    );
 
     Producto producto = productoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        .orElseThrow(() -> new ResourceNotFoundException(
+            ProductoMessages.PRODUCTO_NO_ENCONTRADO
+        ));
 
     producto.setActivo(true);
-    productoRepository.save(producto);
+
+    Producto saved = productoRepository.save(producto);
+
+    log.info(
+        LogMessages.SUCCESS,
+        ProductoMessages.MODULE,
+        "ACTIVAR"
+    );
+
+    return ProductoMapper.toDTO(saved);
   }
+
 }
