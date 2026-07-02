@@ -33,6 +33,10 @@ public final class ProductoMessages {
 
   public static final String OP_LISTAR = "LISTAR";
 
+  public static final String OP_BUSCAR = "BUSCAR";
+
+  public static final String OP_ACTIVAR = "ACTIVAR";
+
   /*
    * ==========================
    * Respuestas API

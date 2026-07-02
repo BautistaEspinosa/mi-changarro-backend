@@ -103,7 +103,7 @@ public class ProductoServiceImpl implements ProductoService {
     log.info(
         LogMessages.START,
         ProductoMessages.MODULE,
-        "BUSCAR"
+        ProductoMessages.OP_BUSCAR
     );
 
     List<ProductoResponseDTO> productos = productoRepository
@@ -115,7 +115,7 @@ public class ProductoServiceImpl implements ProductoService {
     log.info(
         LogMessages.SUCCESS,
         ProductoMessages.MODULE,
-        "BUSCAR"
+        ProductoMessages.OP_BUSCAR
     );
 
     return productos;
@@ -154,7 +154,7 @@ public class ProductoServiceImpl implements ProductoService {
     log.info(
         LogMessages.START,
         ProductoMessages.MODULE,
-        "ACTIVAR"
+        ProductoMessages.OP_BUSCAR
     );
 
     Producto producto = productoRepository.findById(id)
@@ -169,7 +169,7 @@ public class ProductoServiceImpl implements ProductoService {
     log.info(
         LogMessages.SUCCESS,
         ProductoMessages.MODULE,
-        "ACTIVAR"
+        ProductoMessages.OP_ACTIVAR
     );
 
     return ProductoMapper.toDTO(saved);
