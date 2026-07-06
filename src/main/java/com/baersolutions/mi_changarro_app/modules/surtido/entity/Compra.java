@@ -28,7 +28,7 @@ import lombok.Setter;
  * @author Baer Solutions
  */
 @Entity
-@Table(name = "compras")
+@Table(name = "compra")
 @Getter
 @Setter
 @NoArgsConstructor
