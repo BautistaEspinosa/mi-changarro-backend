@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  * DTO que representa el ingreso Betterware dentro de una venta.
  *
  * @param montoTotal monto total ingresado por Betterware.
- *
  * @author Baer Solutions
  */
 public record VentaBetterwareRequestDTO(
@@ -19,4 +18,5 @@ public record VentaBetterwareRequestDTO(
     BigDecimal montoTotal
 
 ) {
+
 }

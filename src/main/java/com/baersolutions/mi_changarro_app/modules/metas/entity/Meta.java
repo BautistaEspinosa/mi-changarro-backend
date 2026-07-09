@@ -52,7 +52,7 @@ public class Meta extends BaseEntity {
   /**
    * Nombre visible de la meta.
    */
-  @Column(nullable = false, length = 100)
+  @Column(name="nombre", nullable = false, length = 100)
   private String nombre;
 
   /**
@@ -82,7 +82,7 @@ public class Meta extends BaseEntity {
   /**
    * Indica si la meta se encuentra activa.
    */
-  @Column(nullable = false)
+  @Column(name= "activa", nullable = false)
   private Boolean activa;
 
   /**

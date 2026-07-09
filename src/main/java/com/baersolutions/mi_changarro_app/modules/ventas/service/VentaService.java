@@ -2,6 +2,7 @@ package com.baersolutions.mi_changarro_app.modules.ventas.service;
 
 import com.baersolutions.mi_changarro_app.modules.ventas.dto.request.VentaRequestDTO;
 import com.baersolutions.mi_changarro_app.modules.ventas.dto.response.VentaResponseDTO;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,4 +41,39 @@ public interface VentaService {
    * @return historial de ventas.
    */
   List<VentaResponseDTO> listarVentas();
+
+  /**
+   * Obtiene el total de ventas cobradas.
+   *
+   * @return total de ventas cobradas
+   */
+  BigDecimal obtenerTotalVentasCobradas();
+
+  /**
+   * Obtiene el total de ventas pendientes.
+   *
+   * @return total pendiente por cobrar
+   */
+  BigDecimal obtenerTotalVentasPendientes();
+
+  /**
+   * Obtiene los ingresos cobrados por productos propios.
+   *
+   * @return ingresos cobrados por productos propios
+   */
+  BigDecimal obtenerIngresosProductosPropios();
+
+  /**
+   * Obtiene los ingresos cobrados por Betterware.
+   *
+   * @return ingresos cobrados por Betterware
+   */
+  BigDecimal obtenerIngresosBetterware();
+
+  /**
+   * Obtiene el costo de reposición de los productos propios vendidos.
+   *
+   * @return costo de reposición de productos vendidos
+   */
+  BigDecimal obtenerCostoReposicionProductosVendidos();
 }

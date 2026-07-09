@@ -1,6 +1,7 @@
 # 🧠 Mi Changarro - Backend
 
-Backend del sistema Mi Changarro, una aplicación educativa diseñada para ayudar a jóvenes emprendedores a entender y administrar su dinero de forma simple y visual.
+Backend del sistema Mi Changarro, una aplicación educativa diseñada para ayudar a jóvenes
+emprendedores a entender y administrar su dinero de forma simple y visual.
 
 ---
 
@@ -39,6 +40,7 @@ Arquitectura en capas:
 Controller → Service → Repository → DTO → Mapper → Entity
 
 Reglas importantes:
+
 - La lógica de negocio vive en Service
 - Los Controllers solo manejan HTTP
 - Nunca se exponen Entities al frontend
@@ -60,7 +62,9 @@ Reglas importantes:
 ## 💡 Conceptos clave
 
 ### Producto
+
 Representa el estado actual del negocio:
+
 - stock disponible
 - costo actual
 - precio de venta
@@ -68,7 +72,9 @@ Representa el estado actual del negocio:
 ---
 
 ### Compras
+
 Registra la entrada de mercancía al negocio.
+
 - Aumenta el stock automáticamente
 - Calcula el costo unitario real
 - Genera historial de compras
@@ -76,7 +82,9 @@ Registra la entrada de mercancía al negocio.
 ---
 
 ### Ventas
+
 Registra la salida de productos.
+
 - Reduce stock automáticamente
 - Puede ser CONTADO o FIADO
 - FIADO genera deuda automáticamente
@@ -84,12 +92,14 @@ Registra la salida de productos.
 ---
 
 ### Inventario
+
 No es una tabla.
 Es una vista del estado actual de productos.
 
 ---
 
 ### Metas
+
 Permite ahorro automático basado en ingresos reales.
 
 ---
@@ -141,6 +151,7 @@ Inventario → consulta Producto
 ## 👨‍💻 Autor
 
 Proyecto de aprendizaje enfocado en:
+
 - Java + Spring Boot
 - React
 - Arquitectura de software
@@ -151,6 +162,7 @@ Proyecto de aprendizaje enfocado en:
 ## 📌 Nota
 
 Este proyecto prioriza:
+
 - Simplicidad
 - Claridad
 - Educación financiera básica

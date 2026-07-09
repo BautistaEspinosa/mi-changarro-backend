@@ -12,30 +12,27 @@ package com.baersolutions.mi_changarro_app.modules.medeben.constants;
 public final class MeDebenRoutes {
 
   /**
+   * Ruta base del módulo Me Deben.
+   */
+  public static final String BASE = "/api/me-deben";
+  /**
+   * Ruta para consultar una deuda por identificador.
+   */
+  public static final String BY_ID = "/{id}";
+  /**
+   * Ruta para marcar una deuda como pagada.
+   */
+  public static final String PAGAR = "/{id}/pagar";
+  /**
+   * Ruta para consultar únicamente deudas pendientes.
+   */
+  public static final String PENDIENTES = "/pendientes";
+
+  /**
    * Constructor privado para evitar instanciación.
    */
   private MeDebenRoutes() {
     throw new IllegalStateException("Utility class");
   }
-
-  /**
-   * Ruta base del módulo Me Deben.
-   */
-  public static final String BASE = "/api/me-deben";
-
-  /**
-   * Ruta para consultar una deuda por identificador.
-   */
-  public static final String BY_ID = "/{id}";
-
-  /**
-   * Ruta para marcar una deuda como pagada.
-   */
-  public static final String PAGAR = "/{id}/pagar";
-
-  /**
-   * Ruta para consultar únicamente deudas pendientes.
-   */
-  public static final String PENDIENTES = "/pendientes";
 
 }

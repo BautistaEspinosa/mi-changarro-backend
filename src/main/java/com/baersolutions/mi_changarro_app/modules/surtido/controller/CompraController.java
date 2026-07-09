@@ -41,7 +41,7 @@ public class CompraController {
       @Valid @RequestBody CompraRequestDTO dto
   ) {
 
-    return ApiResponse.success(
+    return ApiResponse.created(
         SurtidoMessages.COMPRA_REGISTRADA,
         compraService.registrarCompra(dto)
     );

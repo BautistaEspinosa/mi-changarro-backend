@@ -202,7 +202,7 @@ public class CompraServiceImpl implements CompraService {
             .precioVenta(detalleDto.precioVenta())
             .stockActual(0)
             .stockMinimo(BusinessConstants.STOCK_BAJO_DEFAULT)
-            .activo(true)
+            .activo(Boolean.TRUE)
             .build());
   }
 

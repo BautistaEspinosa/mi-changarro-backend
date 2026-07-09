@@ -21,8 +21,7 @@ import lombok.Setter;
  * Entidad que representa el ingreso Betterware asociado a una venta.
  *
  * <p>Betterware no tiene catálogo ni inventario dentro del MVP. Por esta razón,
- * este registro únicamente almacena el monto ingresado y su relación con la
- * venta correspondiente.
+ * este registro únicamente almacena el monto ingresado y su relación con la venta correspondiente.
  *
  * <p>Este ingreso no afecta existencias de productos propios.
  *

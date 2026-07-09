@@ -17,6 +17,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Baer Solutions
  */
-@Repository
+
 public interface DetalleCompraRepository extends JpaRepository<DetalleCompra, Long> {
 }

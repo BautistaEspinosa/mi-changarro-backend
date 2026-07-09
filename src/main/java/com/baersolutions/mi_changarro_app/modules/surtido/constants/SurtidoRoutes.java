@@ -11,27 +11,23 @@ package com.baersolutions.mi_changarro_app.modules.surtido.constants;
 public final class SurtidoRoutes {
 
   /**
-   * Constructor privado para evitar instanciación.
+   * Ruta base del módulo Surtido.
    */
-  private SurtidoRoutes() {
-    throw new IllegalStateException("Utility class");
-  }
+  public static final String BASE = "/api/surtido";
 
   /*
    * ==========================
    * Rutas base
    * ==========================
    */
-
-  /**
-   * Ruta base del módulo Surtido.
-   */
-  public static final String BASE = "/api/surtido";
-
   /**
    * Ruta para obtener una compra por su identificador.
    */
   public static final String BY_ID = "/{id}";
+  /**
+   * Ruta para consultar el historial de compras.
+   */
+  public static final String HISTORIAL = "/historial";
 
   /*
    * ==========================
@@ -40,12 +36,9 @@ public final class SurtidoRoutes {
    */
 
   /**
-   * Ruta para consultar el historial de compras.
+   * Constructor privado para evitar instanciación.
    */
-  public static final String HISTORIAL = "/historial";
-
-  /**
-   * Ruta para consultar la última compra registrada.
-   */
-  public static final String ULTIMA_COMPRA = "/ultima-compra";
+  private SurtidoRoutes() {
+    throw new IllegalStateException("Utility class");
+  }
 }

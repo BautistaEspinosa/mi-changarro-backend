@@ -8,8 +8,20 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * Request para crear o actualizar un producto.
+ * DTO de entrada para crear o actualizar un producto.
+ *
+ * <p>Contiene únicamente la información que el usuario debe proporcionar
+ * para registrar o modificar un producto del catálogo.</p>
+ *
+ * @param nombre nombre del producto
+ * @param costoUnitarioActual costo unitario actual del producto
+ * @param precioVenta precio de venta del producto
+ * @param stockActual existencia actual del producto
+ * @param stockMinimo stock mínimo para alerta
+ *
+ * @author Baer Solutions
  */
+
 public record ProductoRequestDTO(
 
     @NotBlank(message = ProductoMessages.NOMBRE_REQUERIDO)

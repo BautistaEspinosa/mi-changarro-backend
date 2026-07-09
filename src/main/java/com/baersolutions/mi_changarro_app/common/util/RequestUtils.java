@@ -15,9 +15,12 @@ public final class RequestUtils {
   }
 
   /**
-   * Obtiene la URI de la petición actual.
+   * Utilidad para obtener información de la petición HTTP actual.
    *
-   * @return ruta de la petición o cadena vacía si no existe contexto HTTP.
+   * <p>Se utiliza principalmente para incluir la ruta solicitada dentro de las
+   * respuestas estándar de la API.</p>
+   *
+   * @author Baer Solutions
    */
   public static String getCurrentPath() {
 

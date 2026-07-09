@@ -56,6 +56,6 @@ public class DetalleVenta extends BaseEntity {
   @Column(name = "costo_unitario_snapshot", nullable = false, precision = 10, scale = 2)
   private BigDecimal costoUnitarioSnapshot;
 
-  @Column(nullable = false, precision = 10, scale = 2)
+  @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
   private BigDecimal subtotal;
 }

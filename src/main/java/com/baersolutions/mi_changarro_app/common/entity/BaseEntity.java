@@ -8,10 +8,14 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 /**
- * Entidad base para auditoría.
+ * Entidad base que proporciona auditoría automática para todas las entidades persistentes del
+ * sistema.
  *
- * Todas las entidades que hereden de esta clase obtendrán
- * automáticamente la fecha de creación y actualización.
+ * <p>Las entidades que hereden de esta clase obtendrán automáticamente los
+ * campos de fecha de creación y fecha de última actualización, administrados mediante los eventos
+ * del ciclo de vida de JPA.</p>
+ *
+ * @author Baer Solutions
  */
 @Getter
 @MappedSuperclass

@@ -58,14 +58,14 @@ public class MovimientoAhorro extends BaseEntity {
   /**
    * Monto apartado para la meta.
    */
-  @Column(nullable = false, precision = 10, scale = 2)
+  @Column(name = "monto", nullable = false, precision = 10, scale = 2)
   private BigDecimal monto;
 
   /**
    * Origen del dinero que generó el ahorro automático.
    */
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 20)
+  @Column(name = "origen", nullable = false, length = 20)
   private OrigenMovimientoAhorro origen;
 
 }

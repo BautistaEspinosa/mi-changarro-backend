@@ -4,6 +4,7 @@ import com.baersolutions.mi_changarro_app.modules.inventario.entity.Producto;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * Repositorio de acceso a datos para Producto.
@@ -35,5 +36,29 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
    */
   boolean existsByNombreIgnoreCase(String nombre);
 
-  List<Producto> findByActivoTrueAndStockActualLessThanEqual(Integer stockMinimo);
+  /**
+   * Cuenta los productos activos con stock bajo usando el stock mínimo propio de cada producto.
+   *
+   * @return total de productos activos con stock bajo
+   */
+  @Query("""
+      SELECT COUNT(p)
+      FROM Producto p
+      WHERE p.activo = true
+      AND p.stockActual <= p.stockMinimo
+      """)
+  long countProductosConStockBajo();
+
+  /**
+   * Obtiene los productos activos con stock bajo usando el stock mínimo propio de cada producto.
+   *
+   * @return productos activos con stock bajo
+   */
+  @Query("""
+    SELECT p
+    FROM Producto p
+    WHERE p.activo = true
+    AND p.stockActual <= p.stockMinimo
+    """)
+  List<Producto> findProductosConStockBajo();
 }

@@ -30,22 +30,30 @@ public class Producto extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(
+      name = "nombre",
+      nullable = false,
+      length = 100
+  )
   private String nombre;
 
-  @Column(nullable = false)
+  @Column(name ="costo_unitario_actual",nullable = false,precision = 10, scale = 2)
   private BigDecimal costoUnitarioActual;
 
-  @Column(nullable = false)
+  @Column(name ="precio_venta",nullable = false,precision = 10, scale = 2)
   private BigDecimal precioVenta;
 
-  @Column(nullable = false)
+  @Column(name = "stock_actual", nullable = false)
   private Integer stockActual;
 
-  @Column(nullable = false)
+  @Column(name = "stock_minimo", nullable = false)
   private Integer stockMinimo;
 
-  @Column(nullable = false)
-  private Boolean activo = true;
+  @Builder.Default
+  @Column(
+      name = "activo",
+      nullable = false
+  )
+  private Boolean activo = Boolean.TRUE;
 
 }

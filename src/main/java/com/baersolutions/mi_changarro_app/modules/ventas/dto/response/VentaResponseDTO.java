@@ -9,15 +9,14 @@ import java.util.List;
 /**
  * DTO que representa la información de una venta registrada.
  *
- * @param id identificador de la venta.
- * @param tipoVenta tipo de venta registrada.
- * @param estadoVenta estado calculado de la venta.
- * @param nombreCliente nombre del cliente cuando la venta es FIADO.
- * @param totalVenta total final de la venta.
- * @param fechaVenta fecha de registro obtenida desde createdAt.
- * @param detallesVenta productos propios vendidos.
+ * @param id              identificador de la venta.
+ * @param tipoVenta       tipo de venta registrada.
+ * @param estadoVenta     estado calculado de la venta.
+ * @param nombreCliente   nombre del cliente cuando la venta es FIADO.
+ * @param totalVenta      total final de la venta.
+ * @param fechaVenta      fecha de registro obtenida desde createdAt.
+ * @param detallesVenta   productos propios vendidos.
  * @param ventaBetterware ingreso Betterware asociado.
- *
  * @author Baer Solutions
  */
 public record VentaResponseDTO(
@@ -32,4 +31,5 @@ public record VentaResponseDTO(
     VentaBetterwareResponseDTO ventaBetterware
 
 ) {
+
 }

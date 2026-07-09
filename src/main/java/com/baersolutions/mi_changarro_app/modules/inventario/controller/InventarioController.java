@@ -40,7 +40,7 @@ public class InventarioController {
   public ApiResponse<Long> contarProductos() {
     return ApiResponse.success(
         InventarioMessages.MSG_RESUMEN,
-        inventarioService.contarProductosActivos()
+        inventarioService.obtenerTotalProductosActivos()
     );
   }
 }

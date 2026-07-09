@@ -1,12 +1,17 @@
 package com.baersolutions.mi_changarro_app.common.response;
 
+import com.baersolutions.mi_changarro_app.common.util.RequestUtils;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
-import com.baersolutions.mi_changarro_app.common.util.RequestUtils;
+
 /**
  * Respuesta estándar para toda la API.
  *
- * @param <T> Tipo de dato devuelto por el endpoint.
+ * <p>Centraliza el formato de respuesta utilizado por todos los endpoints del
+ * sistema, incluyendo mensaje, datos, estado HTTP, fecha de respuesta y ruta solicitada.</p>
+ *
+ * @param <T> tipo de dato devuelto por el endpoint
+ * @author Baer Solutions
  */
 public record ApiResponse<T>(
 
@@ -22,7 +27,7 @@ public record ApiResponse<T>(
    * Construye una respuesta HTTP 200 (OK).
    *
    * @param message mensaje de la operación
-   * @param data información devuelta
+   * @param data    información devuelta
    * @return respuesta estándar
    */
   public static <T> ApiResponse<T> success(
@@ -58,7 +63,7 @@ public record ApiResponse<T>(
    * Construye una respuesta HTTP 201 (Created).
    *
    * @param message mensaje de la operación
-   * @param data recurso creado
+   * @param data    recurso creado
    * @return respuesta estándar
    */
   public static <T> ApiResponse<T> created(
@@ -75,6 +80,12 @@ public record ApiResponse<T>(
 
   /**
    * Construye la respuesta estándar.
+   *
+   * @param message mensaje de la operación
+   * @param data    información devuelta
+   * @param status  estado HTTP
+   * @param <T>     tipo de dato devuelto
+   * @return respuesta estándar
    */
   private static <T> ApiResponse<T> build(
       String message,
@@ -91,4 +102,22 @@ public record ApiResponse<T>(
     );
   }
 
+  /**
+   * Construye una respuesta de error.
+   *
+   * @param message mensaje del error
+   * @param status  estado HTTP
+   * @return respuesta estándar de error
+   */
+  public static ApiResponse<Void> error(
+      String message,
+      HttpStatus status
+  ) {
+
+    return build(
+        message,
+        null,
+        status
+    );
+  }
 }

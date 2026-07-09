@@ -2,8 +2,6 @@ package com.baersolutions.mi_changarro_app.common.exception;
 
 import com.baersolutions.mi_changarro_app.common.constants.LogMessages;
 import com.baersolutions.mi_changarro_app.common.response.ApiResponse;
-import com.baersolutions.mi_changarro_app.common.util.RequestUtils;
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -115,7 +113,7 @@ public class GlobalExceptionHandler {
     );
 
     return buildResponse(
-        "Error interno del servidor.",
+        LogMessages.INTERNAL_SERVER_ERROR,
         HttpStatus.INTERNAL_SERVER_ERROR
     );
   }
@@ -125,19 +123,10 @@ public class GlobalExceptionHandler {
       HttpStatus status
   ) {
 
-    ApiResponse<Void> response = new ApiResponse<>(
-        message,
-        null,
-        status.value(),
-        LocalDateTime.now(),
-        RequestUtils.getCurrentPath()
-    );
-
     return ResponseEntity
         .status(status)
-        .body(response);
+        .body(ApiResponse.error(message, status));
   }
-
 
 
 }

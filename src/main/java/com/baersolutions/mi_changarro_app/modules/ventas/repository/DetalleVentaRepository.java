@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Baer Solutions
  */
 public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Long> {
+
 }

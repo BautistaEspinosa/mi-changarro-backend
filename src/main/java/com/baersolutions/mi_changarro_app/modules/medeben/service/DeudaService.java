@@ -2,6 +2,7 @@ package com.baersolutions.mi_changarro_app.modules.medeben.service;
 
 import com.baersolutions.mi_changarro_app.modules.medeben.dto.response.DeudaResponseDTO;
 import com.baersolutions.mi_changarro_app.modules.ventas.entity.Venta;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -64,4 +65,17 @@ public interface DeudaService {
       Long id
   );
 
+  /**
+   * Obtiene el dinero que aún está pendiente por cobrar.
+   *
+   * @return monto total pendiente por cobrar
+   */
+  BigDecimal obtenerDineroPendientePorCobrar();
+
+  /**
+   * Obtiene el dinero recuperado por el pago de deudas.
+   *
+   * @return monto total recuperado
+   */
+  BigDecimal obtenerDineroRecuperado();
 }

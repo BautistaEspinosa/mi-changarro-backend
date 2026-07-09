@@ -14,6 +14,7 @@ import com.baersolutions.mi_changarro_app.modules.medeben.service.DeudaService;
 import com.baersolutions.mi_changarro_app.modules.metas.service.MetaService;
 import com.baersolutions.mi_changarro_app.modules.ventas.entity.Venta;
 import com.baersolutions.mi_changarro_app.modules.ventas.enums.TipoVenta;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -210,4 +211,43 @@ public class DeudaServiceImpl implements DeudaService {
     return DeudaMapper.toDTO(deudaGuardada);
   }
 
+  /**
+   * Obtiene el dinero que aún está pendiente por cobrar.
+   *
+   * @return monto total pendiente por cobrar
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerDineroPendientePorCobrar() {
+
+    log.info(
+        LogMessages.START,
+        MeDebenMessages.MODULE,
+        MeDebenMessages.OP_INDICADORES
+    );
+
+    BigDecimal result =  deudaRepository.obtenerTotalDeudasPendientes(
+        EstadoDeuda.PENDIENTE
+    );
+    log.info(
+        LogMessages.SUCCESS,
+        MeDebenMessages.MODULE,
+        MeDebenMessages.OP_INDICADORES
+    );
+    return result;
+  }
+
+  /**
+   * Obtiene el dinero recuperado por el pago de deudas.
+   *
+   * @return monto total recuperado
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerDineroRecuperado() {
+
+    return deudaRepository.obtenerTotalDeudasPagadas(
+        EstadoDeuda.PAGADA
+    );
+  }
 }

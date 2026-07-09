@@ -10,13 +10,11 @@ package com.baersolutions.mi_changarro_app.modules.ventas.constants;
  */
 public final class VentaRoutes {
 
+  public static final String BASE = "/api/ventas";
+  public static final String BY_ID = "/{id}";
+  public static final String HISTORIAL = "/historial";
+
   private VentaRoutes() {
     throw new IllegalStateException("Utility class");
   }
-
-  public static final String BASE = "/api/ventas";
-
-  public static final String BY_ID = "/{id}";
-
-  public static final String HISTORIAL = "/historial";
 }

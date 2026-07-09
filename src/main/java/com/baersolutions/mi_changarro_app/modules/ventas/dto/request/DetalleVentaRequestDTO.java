@@ -8,8 +8,7 @@ import jakarta.validation.constraints.NotNull;
  * DTO que representa un producto propio dentro de una venta.
  *
  * @param productoId identificador del producto vendido.
- * @param cantidad cantidad vendida.
- *
+ * @param cantidad   cantidad vendida.
  * @author Baer Solutions
  */
 public record DetalleVentaRequestDTO(
@@ -22,4 +21,5 @@ public record DetalleVentaRequestDTO(
     Integer cantidad
 
 ) {
+
 }

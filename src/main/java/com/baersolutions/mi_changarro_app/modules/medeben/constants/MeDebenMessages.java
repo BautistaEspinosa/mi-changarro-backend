@@ -11,67 +11,56 @@ package com.baersolutions.mi_changarro_app.modules.medeben.constants;
  */
 public final class MeDebenMessages {
 
-  /**
-   * Constructor privado para evitar instanciación.
-   */
-  private MeDebenMessages() {
-    throw new IllegalStateException("Utility class");
-  }
+  public static final String MODULE = "ME_DEBEN";
 
   /*
    * ==========================
    * Módulo
    * ==========================
    */
-
-  public static final String MODULE = "ME_DEBEN";
+  public static final String OP_CREAR_DEUDA = "CREAR_DEUDA";
 
   /*
    * ==========================
    * Operaciones (Logs)
    * ==========================
    */
-
-  public static final String OP_CREAR_DEUDA = "CREAR_DEUDA";
-
   public static final String OP_OBTENER_DEUDA = "OBTENER_DEUDA";
-
   public static final String OP_LISTAR_DEUDAS = "LISTAR_DEUDAS";
-
   public static final String OP_MARCAR_COMO_PAGADA = "MARCAR_COMO_PAGADA";
-
+  public static final String DEUDA_CREADA =
+      "Deuda creada correctamente.";
+  public static final String OP_INDICADORES = "INDICADORES";
   /*
    * ==========================
    * Respuestas API
    * ==========================
    */
-
-  public static final String DEUDA_CREADA =
-      "Deuda creada correctamente.";
-
   public static final String DEUDA_OBTENIDA =
       "Deuda obtenida correctamente.";
-
   public static final String DEUDAS_OBTENIDAS =
       "Deudas obtenidas correctamente.";
-
   public static final String DEUDA_PAGADA =
       "La deuda fue marcada como pagada correctamente.";
+  public static final String DEUDA_NO_ENCONTRADA =
+      "La deuda no fue encontrada.";
 
   /*
    * ==========================
    * Excepciones
    * ==========================
    */
-
-  public static final String DEUDA_NO_ENCONTRADA =
-      "La deuda no fue encontrada.";
-
   public static final String DEUDA_YA_PAGADA =
       "La deuda ya fue pagada.";
-
   public static final String VENTA_NO_ES_FIADO =
       "Solo las ventas FIADO pueden generar una deuda.";
+
+  /**
+   * Constructor privado para evitar instanciación.
+   */
+  private MeDebenMessages() {
+    throw new IllegalStateException("Utility class");
+  }
 
   /*
    * ==========================

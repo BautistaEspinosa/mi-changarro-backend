@@ -13,8 +13,8 @@ import java.util.List;
  * Mapper manual del módulo Ventas.
  *
  * <p>Convierte las entidades del módulo Ventas en DTOs de respuesta,
- * respetando la estructura Cabecera → Detalle y exponiendo la fecha de venta
- * desde el campo {@code createdAt} heredado de la entidad base.
+ * respetando la estructura Cabecera → Detalle y exponiendo la fecha de venta desde el campo
+ * {@code createdAt} heredado de la entidad base.
  *
  * @author Baer Solutions
  */

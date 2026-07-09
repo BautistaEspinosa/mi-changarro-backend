@@ -3,7 +3,7 @@ spring:
     name: mi-changarro-app
 
   profiles:
-    active: dev
+    active: prod
 
 server:
   port: 8080

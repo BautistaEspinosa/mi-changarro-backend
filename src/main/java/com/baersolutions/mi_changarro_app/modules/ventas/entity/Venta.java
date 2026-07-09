@@ -28,8 +28,8 @@ import lombok.Setter;
  * Entidad que representa una venta del negocio.
  *
  * <p>Funciona como cabecera de la boleta única de venta. Puede contener
- * productos propios mediante {@link DetalleVenta} y, opcionalmente, un ingreso
- * Betterware mediante {@link VentaBetterware}.
+ * productos propios mediante {@link DetalleVenta} y, opcionalmente, un ingreso Betterware mediante
+ * {@link VentaBetterware}.
  *
  * <p>La fecha oficial de la venta se obtiene del campo {@code createdAt}
  * heredado de {@link BaseEntity}.
@@ -56,20 +56,20 @@ public class Venta extends BaseEntity {
    * Tipo de venta realizada.
    */
   @Enumerated(EnumType.STRING)
-  @Column(name = "tipo_venta", nullable = false)
+  @Column(name = "tipo_venta", nullable = false, length = 10)
   private TipoVenta tipoVenta;
 
   /**
    * Estado calculado de la venta.
    */
   @Enumerated(EnumType.STRING)
-  @Column(name = "estado_venta", nullable = false)
+  @Column(name = "estado_venta", nullable = false, length = 10)
   private EstadoVenta estadoVenta;
 
   /**
    * Nombre del cliente cuando la venta es FIADO.
    */
-  @Column(name = "nombre_cliente")
+  @Column(name = "nombre_cliente", length = 10)
   private String nombreCliente;
 
   /**

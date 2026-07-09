@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Baer Solutions
  */
-@Repository
+
 public interface CompraRepository extends JpaRepository<Compra, Long> {
 
   /**

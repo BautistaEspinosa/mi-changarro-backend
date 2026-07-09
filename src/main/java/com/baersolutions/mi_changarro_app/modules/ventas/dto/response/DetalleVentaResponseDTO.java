@@ -6,12 +6,11 @@ import java.math.BigDecimal;
 /**
  * DTO que representa un producto vendido dentro de una venta.
  *
- * @param producto información del producto vendido.
- * @param cantidad cantidad vendida.
- * @param precioUnitario precio congelado al momento de la venta.
+ * @param producto              información del producto vendido.
+ * @param cantidad              cantidad vendida.
+ * @param precioUnitario        precio congelado al momento de la venta.
  * @param costoUnitarioSnapshot costo congelado al momento de la venta.
- * @param subtotal subtotal calculado del producto vendido.
- *
+ * @param subtotal              subtotal calculado del producto vendido.
  * @author Baer Solutions
  */
 public record DetalleVentaResponseDTO(
@@ -23,4 +22,5 @@ public record DetalleVentaResponseDTO(
     BigDecimal subtotal
 
 ) {
+
 }

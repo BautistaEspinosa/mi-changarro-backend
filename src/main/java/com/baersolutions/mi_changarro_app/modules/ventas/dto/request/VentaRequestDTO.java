@@ -12,11 +12,10 @@ import java.util.List;
  * <p>Una venta puede contener productos propios, un ingreso Betterware o ambos
  * dentro de una misma boleta.
  *
- * @param tipoVenta tipo de venta: CONTADO o FIADO.
- * @param nombreCliente nombre del cliente cuando la venta es FIADO.
- * @param detallesVenta productos propios incluidos en la venta.
+ * @param tipoVenta       tipo de venta: CONTADO o FIADO.
+ * @param nombreCliente   nombre del cliente cuando la venta es FIADO.
+ * @param detallesVenta   productos propios incluidos en la venta.
  * @param ventaBetterware ingreso Betterware incluido en la venta.
- *
  * @author Baer Solutions
  */
 public record VentaRequestDTO(
@@ -32,4 +31,5 @@ public record VentaRequestDTO(
     VentaBetterwareRequestDTO ventaBetterware
 
 ) {
+
 }

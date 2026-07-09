@@ -235,6 +235,11 @@ public class MetaServiceImpl implements MetaService {
     );
 
     if (!EstadoVenta.COBRADO.equals(venta.getEstadoVenta())) {
+      log.info(
+          LogMessages.SUCCESS,
+          MetaMessages.MODULE,
+          MetaMessages.OP_AHORRO_AUTOMATICO
+      );
       return;
     }
 

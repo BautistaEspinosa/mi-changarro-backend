@@ -32,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
  * Implementación del servicio del módulo Ventas.
  *
  * <p>Contiene la lógica de negocio para registrar ventas híbridas, reducir
- * inventario de productos propios, calcular totales, conservar snapshots de
- * precios y costos, y consultar ventas registradas.
+ * inventario de productos propios, calcular totales, conservar snapshots de precios y costos, y
+ * consultar ventas registradas.
  *
  * @author Baer Solutions
  */
@@ -54,8 +54,8 @@ public class VentaServiceImpl implements VentaService {
    * Registra una nueva venta híbrida.
    *
    * <p>La venta puede contener productos propios, ingreso Betterware o ambos.
-   * Solo los productos propios reducen inventario. Betterware únicamente suma
-   * al total de la venta.
+   * Solo los productos propios reducen inventario. Betterware únicamente suma al total de la
+   * venta.
    *
    * @param dto información de la venta a registrar.
    * @return venta registrada.
@@ -107,7 +107,7 @@ public class VentaServiceImpl implements VentaService {
       deudaService.crearDesdeVenta(ventaGuardada);
     }
 
-    if(EstadoVenta.COBRADO.equals(ventaGuardada.getEstadoVenta())){
+    if (EstadoVenta.COBRADO.equals(ventaGuardada.getEstadoVenta())) {
       metaService.registrarAhorroDesdeVenta(ventaGuardada);
     }
 
@@ -223,7 +223,7 @@ public class VentaServiceImpl implements VentaService {
   /**
    * Crea los detalles de productos propios de la venta.
    *
-   * @param venta venta a la que pertenecen los detalles.
+   * @param venta       venta a la que pertenecen los detalles.
    * @param detallesDto productos incluidos en la venta.
    * @return detalles generados.
    */
@@ -244,7 +244,7 @@ public class VentaServiceImpl implements VentaService {
   /**
    * Crea un detalle de venta y reduce el inventario del producto.
    *
-   * @param venta venta a la que pertenece el detalle.
+   * @param venta      venta a la que pertenece el detalle.
    * @param detalleDto información del producto vendido.
    * @return detalle de venta generado.
    */
@@ -311,7 +311,7 @@ public class VentaServiceImpl implements VentaService {
    * Crea el ingreso Betterware asociado a la venta cuando aplica.
    *
    * @param venta venta a la que pertenece el ingreso Betterware.
-   * @param dto información de la venta.
+   * @param dto   información de la venta.
    * @return ingreso Betterware o {@code null}.
    */
   private VentaBetterware crearVentaBetterware(
@@ -329,4 +329,134 @@ public class VentaServiceImpl implements VentaService {
         .build();
   }
 
+  /**
+   * Obtiene el total de ventas cobradas.
+   *
+   * @return total de ventas cobradas
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerTotalVentasCobradas() {
+
+    log.info(
+        LogMessages.START,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    BigDecimal result = ventaRepository.obtenerTotalVentasCobradas(
+        EstadoVenta.COBRADO
+    );
+
+    log.info(
+        LogMessages.SUCCESS,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+    return result;
+  }
+
+  /**
+   * Obtiene el total de ventas pendientes.
+   *
+   * @return total pendiente por cobrar
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerTotalVentasPendientes() {
+
+    log.info(
+        LogMessages.START,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    BigDecimal result = ventaRepository.obtenerTotalVentasPendientes(
+        EstadoVenta.PENDIENTE
+    );
+    log.info(
+        LogMessages.SUCCESS,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+    return result;
+  }
+
+  /**
+   * Obtiene el total cobrado por productos propios.
+   *
+   * @return total cobrado por productos propios
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerIngresosProductosPropios() {
+
+    log.info(
+        LogMessages.START,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    BigDecimal result = ventaRepository.obtenerTotalProductosPropiosCobrados(
+        EstadoVenta.COBRADO);
+    log.info(
+        LogMessages.SUCCESS,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    return result;
+  }
+
+  /**
+   * Obtener los ingresos cobrados por Betterware.
+   *
+   * @return total cobrado por Betterware
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerIngresosBetterware() {
+
+    log.info(
+        LogMessages.START,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    BigDecimal result = ventaRepository.obtenerTotalBetterwareCobrado(
+        EstadoVenta.COBRADO
+    );
+    log.info(
+        LogMessages.SUCCESS,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+    return result;
+  }
+
+  /**
+   * Obtiene el dinero necesario para volver a comprar los productos vendidos.
+   *
+   * @return total para volver a comprar
+   */
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal obtenerCostoReposicionProductosVendidos() {
+
+    log.info(
+        LogMessages.START,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+
+    BigDecimal result = ventaRepository.obtenerTotalParaVolverAComprar(
+        EstadoVenta.COBRADO
+    );
+    log.info(
+        LogMessages.SUCCESS,
+        VentaMessages.MODULE,
+        VentaMessages.OP_INDICADORES
+    );
+    return result;
+  }
 }
