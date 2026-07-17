@@ -31,9 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Implementación del servicio del módulo Metas.
  *
- * <p>Contiene la lógica de negocio para crear metas de ahorro, calcular el
- * ahorro requerido diario, consultar el progreso de la meta activa y registrar
- * movimientos de ahorro automático cuando entra dinero real al negocio.
+ * <p>Contiene la lógica de negocio para crear metas de ahorro, calcular el ahorro requerido diario,
+ * consultar el progreso de la meta activa y registrar movimientos de ahorro automático cuando entra
+ * dinero real al negocio.
  *
  * @author Baer Solutions
  */
@@ -49,8 +49,8 @@ public class MetaServiceImpl implements MetaService {
   /**
    * Crea una nueva meta de ahorro.
    *
-   * <p>Solo puede existir una meta activa a la vez. Si existe una meta activa,
-   * ésta será desactivada automáticamente antes de registrar la nueva.
+   * <p>Solo puede existir una meta activa a la vez. Si existe una meta activa, ésta será
+   * desactivada automáticamente antes de registrar la nueva.
    *
    * @param dto información capturada por el usuario.
    * @return meta creada.
@@ -59,41 +59,33 @@ public class MetaServiceImpl implements MetaService {
   @Transactional
   public MetaResponseDTO crearMeta(final MetaRequestDTO dto) {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_CREAR
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_CREAR);
 
     validarFechaLimite(dto.fechaLimite());
 
-    metaRepository.findByActiva(Boolean.TRUE)
-        .ifPresent(metaActiva -> {
-          metaActiva.setActiva(Boolean.FALSE);
-          metaRepository.save(metaActiva);
-        });
+    metaRepository
+        .findByActiva(Boolean.TRUE)
+        .ifPresent(
+            metaActiva -> {
+              metaActiva.setActiva(Boolean.FALSE);
+              metaRepository.save(metaActiva);
+            });
 
-    BigDecimal ahorroRequerido = calcularAhorroRequerido(
-        dto.costoObjetivo(),
-        dto.fechaLimite()
-    );
+    BigDecimal ahorroRequerido = calcularAhorroRequerido(dto.costoObjetivo(), dto.fechaLimite());
 
-    Meta meta = Meta.builder()
-        .nombre(dto.nombre())
-        .costoObjetivo(dto.costoObjetivo())
-        .fechaLimite(dto.fechaLimite())
-        .ahorroRequerido(ahorroRequerido)
-        .ahorroAcumulado(BigDecimal.ZERO)
-        .activa(Boolean.TRUE)
-        .build();
+    Meta meta =
+        Meta.builder()
+            .nombre(dto.nombre())
+            .costoObjetivo(dto.costoObjetivo())
+            .fechaLimite(dto.fechaLimite())
+            .ahorroRequerido(ahorroRequerido)
+            .ahorroAcumulado(BigDecimal.ZERO)
+            .activa(Boolean.TRUE)
+            .build();
 
     Meta metaGuardada = metaRepository.save(meta);
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_CREAR
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_CREAR);
 
     return MetaMapper.toDTO(metaGuardada);
   }
@@ -108,19 +100,11 @@ public class MetaServiceImpl implements MetaService {
   @Transactional(readOnly = true)
   public MetaResponseDTO obtenerPorId(final Long id) {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_OBTENER
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_OBTENER);
 
     Meta meta = obtenerMetaPorId(id);
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_OBTENER
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_OBTENER);
 
     return MetaMapper.toDTO(meta);
   }
@@ -131,25 +115,18 @@ public class MetaServiceImpl implements MetaService {
    * @return meta activa.
    */
   @Override
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, noRollbackFor = ResourceNotFoundException.class)
   public MetaResponseDTO obtenerMetaActiva() {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_META_ACTIVA
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_META_ACTIVA);
 
-    Meta meta = metaRepository.findByActiva(Boolean.TRUE)
-        .orElseThrow(() -> new ResourceNotFoundException(
-            MetaMessages.META_ACTIVA_NO_ENCONTRADA
-        ));
+    Meta meta =
+        metaRepository
+            .findByActiva(Boolean.TRUE)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(MetaMessages.META_ACTIVA_NO_ENCONTRADA));
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_META_ACTIVA
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_META_ACTIVA);
 
     return MetaMapper.toDTO(meta);
   }
@@ -163,22 +140,12 @@ public class MetaServiceImpl implements MetaService {
   @Transactional(readOnly = true)
   public List<MetaResponseDTO> listarHistorial() {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_LISTAR
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_LISTAR);
 
-    List<MetaResponseDTO> metas = metaRepository.findAllByOrderByCreatedAtDesc()
-        .stream()
-        .map(MetaMapper::toDTO)
-        .toList();
+    List<MetaResponseDTO> metas =
+        metaRepository.findAllByOrderByCreatedAtDesc().stream().map(MetaMapper::toDTO).toList();
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_LISTAR
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_LISTAR);
 
     return metas;
   }
@@ -193,25 +160,16 @@ public class MetaServiceImpl implements MetaService {
   @Transactional(readOnly = true)
   public List<MovimientoAhorroResponseDTO> listarMovimientos(final Long id) {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_MOVIMIENTOS
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_MOVIMIENTOS);
 
     Meta meta = obtenerMetaPorId(id);
 
     List<MovimientoAhorroResponseDTO> movimientos =
-        movimientoAhorroRepository.findByMetaOrderByCreatedAtDesc(meta)
-            .stream()
+        movimientoAhorroRepository.findByMetaOrderByCreatedAtDesc(meta).stream()
             .map(MetaMapper::toMovimientoDTO)
             .toList();
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_MOVIMIENTOS
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_MOVIMIENTOS);
 
     return movimientos;
   }
@@ -219,8 +177,8 @@ public class MetaServiceImpl implements MetaService {
   /**
    * Registra ahorro automático desde una venta cobrada.
    *
-   * <p>Las ventas FIADO no generan ahorro mientras estén pendientes. Solo las
-   * ventas con estado COBRADO representan dinero real para el módulo Metas.
+   * <p>Las ventas FIADO no generan ahorro mientras estén pendientes. Solo las ventas con estado
+   * COBRADO representan dinero real para el módulo Metas.
    *
    * @param venta venta cobrada que puede generar ahorro.
    */
@@ -228,37 +186,23 @@ public class MetaServiceImpl implements MetaService {
   @Transactional
   public void registrarAhorroDesdeVenta(final Venta venta) {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_AHORRO_AUTOMATICO
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_AHORRO_AUTOMATICO);
 
     if (!EstadoVenta.COBRADO.equals(venta.getEstadoVenta())) {
-      log.info(
-          LogMessages.SUCCESS,
-          MetaMessages.MODULE,
-          MetaMessages.OP_AHORRO_AUTOMATICO
-      );
+      log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_AHORRO_AUTOMATICO);
       return;
     }
 
-    registrarAhorroAutomatico(
-        OrigenMovimientoAhorro.VENTA_COBRADA
-    );
+    registrarAhorroAutomatico(OrigenMovimientoAhorro.VENTA_COBRADA);
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_AHORRO_AUTOMATICO
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_AHORRO_AUTOMATICO);
   }
 
   /**
    * Registra ahorro automático desde una deuda pagada.
    *
-   * <p>Una deuda solo aporta ahorro cuando ya fue marcada como PAGADA, porque
-   * hasta ese momento el dinero realmente entró al negocio.
+   * <p>Una deuda solo aporta ahorro cuando ya fue marcada como PAGADA, porque hasta ese momento el
+   * dinero realmente entró al negocio.
    *
    * @param deuda deuda pagada que puede generar ahorro.
    */
@@ -266,58 +210,41 @@ public class MetaServiceImpl implements MetaService {
   @Transactional
   public void registrarAhorroDesdeDeudaPagada(final Deuda deuda) {
 
-    log.info(
-        LogMessages.START,
-        MetaMessages.MODULE,
-        MetaMessages.OP_AHORRO_AUTOMATICO
-    );
+    log.info(LogMessages.START, MetaMessages.MODULE, MetaMessages.OP_AHORRO_AUTOMATICO);
 
     if (!EstadoDeuda.PAGADA.equals(deuda.getEstado())) {
       return;
     }
 
-    registrarAhorroAutomatico(
-        OrigenMovimientoAhorro.DEUDA_PAGADA
-    );
+    registrarAhorroAutomatico(OrigenMovimientoAhorro.DEUDA_PAGADA);
 
-    log.info(
-        LogMessages.SUCCESS,
-        MetaMessages.MODULE,
-        MetaMessages.OP_AHORRO_AUTOMATICO
-    );
+    log.info(LogMessages.SUCCESS, MetaMessages.MODULE, MetaMessages.OP_AHORRO_AUTOMATICO);
   }
 
   /**
    * Registra ahorro automático para la meta activa.
    *
-   * <p>Si no existe meta activa, no se registra ningún movimiento. Si la meta
-   * ya alcanzó su objetivo, tampoco se genera ahorro adicional.
+   * <p>Si no existe meta activa, no se registra ningún movimiento. Si la meta ya alcanzó su
+   * objetivo, tampoco se genera ahorro adicional.
    *
    * @param origen origen del dinero que generó el ahorro.
    */
-  private void registrarAhorroAutomatico(
-      final OrigenMovimientoAhorro origen
-  ) {
+  private void registrarAhorroAutomatico(final OrigenMovimientoAhorro origen) {
 
-    metaRepository.findByActiva(Boolean.TRUE)
-        .ifPresent(meta -> {
-          BigDecimal montoAhorro = calcularMontoARegistrar(meta);
+    metaRepository
+        .findByActiva(Boolean.TRUE)
+        .ifPresent(
+            meta -> {
+              BigDecimal montoAhorro = calcularMontoARegistrar(meta);
 
-          if (BigDecimal.ZERO.compareTo(montoAhorro) >= 0) {
-            return;
-          }
+              if (BigDecimal.ZERO.compareTo(montoAhorro) >= 0) {
+                return;
+              }
 
-          guardarMovimientoAhorro(
-              meta,
-              montoAhorro,
-              origen
-          );
+              guardarMovimientoAhorro(meta, montoAhorro, origen);
 
-          actualizarAhorroMeta(
-              meta,
-              montoAhorro
-          );
-        });
+              actualizarAhorroMeta(meta, montoAhorro);
+            });
   }
 
   /**
@@ -328,16 +255,10 @@ public class MetaServiceImpl implements MetaService {
    * @param origen origen del dinero.
    */
   private void guardarMovimientoAhorro(
-      final Meta meta,
-      final BigDecimal montoAhorro,
-      final OrigenMovimientoAhorro origen
-  ) {
+      final Meta meta, final BigDecimal montoAhorro, final OrigenMovimientoAhorro origen) {
 
-    MovimientoAhorro movimiento = MovimientoAhorro.builder()
-        .meta(meta)
-        .monto(montoAhorro)
-        .origen(origen)
-        .build();
+    MovimientoAhorro movimiento =
+        MovimientoAhorro.builder().meta(meta).monto(montoAhorro).origen(origen).build();
 
     movimientoAhorroRepository.save(movimiento);
   }
@@ -345,24 +266,18 @@ public class MetaServiceImpl implements MetaService {
   /**
    * Actualiza el ahorro acumulado de la meta.
    *
-   * <p>Cuando el ahorro acumulado alcanza el costo objetivo, la meta se marca
-   * como inactiva automáticamente para evitar nuevos movimientos sobre una meta
-   * ya completada.
+   * <p>Cuando el ahorro acumulado alcanza el costo objetivo, la meta se marca como inactiva
+   * automáticamente para evitar nuevos movimientos sobre una meta ya completada.
    *
    * @param meta meta a actualizar.
    * @param montoAhorro monto ahorrado.
    */
-  private void actualizarAhorroMeta(
-      final Meta meta,
-      final BigDecimal montoAhorro
-  ) {
+  private void actualizarAhorroMeta(final Meta meta, final BigDecimal montoAhorro) {
 
-    BigDecimal nuevoAhorroAcumulado = meta.getAhorroAcumulado()
-        .add(montoAhorro)
-        .setScale(
-            BusinessConstants.DECIMAL_SCALE,
-            BusinessConstants.DECIMAL_ROUNDING_MODE
-        );
+    BigDecimal nuevoAhorroAcumulado =
+        meta.getAhorroAcumulado()
+            .add(montoAhorro)
+            .setScale(BusinessConstants.DECIMAL_SCALE, BusinessConstants.DECIMAL_ROUNDING_MODE);
 
     if (nuevoAhorroAcumulado.compareTo(meta.getCostoObjetivo()) >= 0) {
       meta.setAhorroAcumulado(meta.getCostoObjetivo());
@@ -377,16 +292,15 @@ public class MetaServiceImpl implements MetaService {
   /**
    * Calcula el monto que debe registrarse como ahorro automático.
    *
-   * <p>El monto registrado nunca puede exceder lo que falta para completar la
-   * meta. Si la meta ya está completa, devuelve cero.
+   * <p>El monto registrado nunca puede exceder lo que falta para completar la meta. Si la meta ya
+   * está completa, devuelve cero.
    *
    * @param meta meta activa.
    * @return monto a registrar.
    */
   private BigDecimal calcularMontoARegistrar(final Meta meta) {
 
-    BigDecimal faltante = meta.getCostoObjetivo()
-        .subtract(meta.getAhorroAcumulado());
+    BigDecimal faltante = meta.getCostoObjetivo().subtract(meta.getAhorroAcumulado());
 
     if (BigDecimal.ZERO.compareTo(faltante) >= 0) {
       return BigDecimal.ZERO;
@@ -394,49 +308,37 @@ public class MetaServiceImpl implements MetaService {
 
     if (meta.getAhorroRequerido().compareTo(faltante) > 0) {
       return faltante.setScale(
-          BusinessConstants.DECIMAL_SCALE,
-          BusinessConstants.DECIMAL_ROUNDING_MODE
-      );
+          BusinessConstants.DECIMAL_SCALE, BusinessConstants.DECIMAL_ROUNDING_MODE);
     }
 
-    return meta.getAhorroRequerido().setScale(
-        BusinessConstants.DECIMAL_SCALE,
-        BusinessConstants.DECIMAL_ROUNDING_MODE
-    );
+    return meta.getAhorroRequerido()
+        .setScale(BusinessConstants.DECIMAL_SCALE, BusinessConstants.DECIMAL_ROUNDING_MODE);
   }
 
   /**
    * Calcula el ahorro diario requerido para alcanzar la meta.
    *
-   * <p>Durante la creación de la meta, el campo {@code createdAt} aún no ha sido
-   * asignado por JPA. Por ello se utiliza {@link LocalDate#now()} como fecha
-   * efectiva de creación para calcular los días disponibles.
+   * <p>Durante la creación de la meta, el campo {@code createdAt} aún no ha sido asignado por JPA.
+   * Por ello se utiliza {@link LocalDate#now()} como fecha efectiva de creación para calcular los
+   * días disponibles.
    *
    * @param costoObjetivo costo total de la meta.
    * @param fechaLimite fecha límite definida por el usuario.
    * @return ahorro diario requerido.
    */
   private BigDecimal calcularAhorroRequerido(
-      final BigDecimal costoObjetivo,
-      final LocalDate fechaLimite
-  ) {
+      final BigDecimal costoObjetivo, final LocalDate fechaLimite) {
 
-    long diasDisponibles = ChronoUnit.DAYS.between(
-        LocalDate.now(),
-        fechaLimite
-    );
+    long diasDisponibles = ChronoUnit.DAYS.between(LocalDate.now(), fechaLimite);
 
     if (diasDisponibles <= 0) {
-      throw new BusinessException(
-          MetaMessages.FECHA_LIMITE_INVALIDA
-      );
+      throw new BusinessException(MetaMessages.FECHA_LIMITE_INVALIDA);
     }
 
     return costoObjetivo.divide(
         BigDecimal.valueOf(diasDisponibles),
         BusinessConstants.DECIMAL_SCALE,
-        BusinessConstants.DECIMAL_ROUNDING_MODE
-    );
+        BusinessConstants.DECIMAL_ROUNDING_MODE);
   }
 
   /**
@@ -447,9 +349,7 @@ public class MetaServiceImpl implements MetaService {
   private void validarFechaLimite(final LocalDate fechaLimite) {
 
     if (!fechaLimite.isAfter(LocalDate.now())) {
-      throw new BusinessException(
-          MetaMessages.FECHA_LIMITE_INVALIDA
-      );
+      throw new BusinessException(MetaMessages.FECHA_LIMITE_INVALIDA);
     }
   }
 
@@ -461,10 +361,8 @@ public class MetaServiceImpl implements MetaService {
    */
   private Meta obtenerMetaPorId(final Long id) {
 
-    return metaRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(
-            MetaMessages.META_NO_ENCONTRADA
-        ));
+    return metaRepository
+        .findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException(MetaMessages.META_NO_ENCONTRADA));
   }
-
 }
