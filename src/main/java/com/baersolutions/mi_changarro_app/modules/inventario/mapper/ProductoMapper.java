@@ -3,20 +3,18 @@ package com.baersolutions.mi_changarro_app.modules.inventario.mapper;
 import com.baersolutions.mi_changarro_app.modules.inventario.dto.request.ProductoRequestDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.dto.response.ProductoResponseDTO;
 import com.baersolutions.mi_changarro_app.modules.inventario.entity.Producto;
+import java.math.BigDecimal;
 
 /**
  * Mapper manual del módulo Producto.
  *
- * <p>Convierte entidades y DTOs del módulo Producto sin contener lógica
- * de negocio.</p>
+ * <p>Convierte entidades y DTOs del módulo Producto sin contener lógica de negocio.
  *
  * @author Baer Solutions
  */
 public final class ProductoMapper {
 
-  /**
-   * Constructor privado para evitar instanciación.
-   */
+  /** Constructor privado para evitar instanciación. */
   private ProductoMapper() {
     throw new IllegalStateException("Utility class");
   }
@@ -27,15 +25,13 @@ public final class ProductoMapper {
    * @param dto información capturada del producto.
    * @return entidad Producto.
    */
-  public static Producto toEntity(
-      final ProductoRequestDTO dto
-  ) {
+  public static Producto toEntity(final ProductoRequestDTO dto) {
 
     return Producto.builder()
         .nombre(dto.nombre())
-        .costoUnitarioActual(dto.costoUnitarioActual())
-        .precioVenta(dto.precioVenta())
-        .stockActual(dto.stockActual())
+        .costoUnitarioActual(BigDecimal.ZERO)
+        .precioVenta(BigDecimal.ZERO)
+        .stockActual(0)
         .stockMinimo(dto.stockMinimo())
         .activo(Boolean.TRUE)
         .build();
@@ -47,9 +43,7 @@ public final class ProductoMapper {
    * @param entity entidad Producto.
    * @return DTO de respuesta.
    */
-  public static ProductoResponseDTO toDTO(
-      final Producto entity
-  ) {
+  public static ProductoResponseDTO toDTO(final Producto entity) {
 
     return new ProductoResponseDTO(
         entity.getId(),
@@ -58,8 +52,6 @@ public final class ProductoMapper {
         entity.getPrecioVenta(),
         entity.getStockActual(),
         entity.getStockMinimo(),
-        entity.getActivo()
-    );
+        entity.getActivo());
   }
-
 }
